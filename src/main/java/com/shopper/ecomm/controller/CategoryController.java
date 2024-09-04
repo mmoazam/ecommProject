@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,15 +21,16 @@ public class CategoryController {
     }
 
     @GetMapping("/api/public/categories")
-    public List<Category> getAllCategories() {
-        return categoryService.getAllCategories();
+    public ResponseEntity<List<Category>> getAllCategories() {
+        List<Category> allCategories = categoryService.getAllCategories();
+        return new ResponseEntity<>(allCategories, HttpStatus.OK);
     }
 
     @PostMapping("/api/public/categories")
-    public String createCategory(@RequestBody Category category) {
+    public ResponseEntity<String> createCategory(@RequestBody Category category) {
         category.setCategoryId(nextId++);
         categoryService.createCategory(category);
-        return "category created";
+        return new ResponseEntity<>("category created", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/api/public/categories/{categoryId}")
