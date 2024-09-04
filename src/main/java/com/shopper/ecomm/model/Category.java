@@ -1,14 +1,13 @@
 package com.shopper.ecomm.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "categories")
 public class Category {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long categoryId;
 
     private String categoryName;
@@ -33,4 +32,6 @@ public class Category {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
     }
+
+    public Category(){}
 }
