@@ -2,6 +2,7 @@ package com.shopper.ecomm.controller;
 
 import com.shopper.ecomm.exceptions.ApiException;
 import com.shopper.ecomm.model.Category;
+import com.shopper.ecomm.payload.CategoryDTO;
 import com.shopper.ecomm.payload.CategoryResponse;
 import com.shopper.ecomm.service.CategoryService;
 import jakarta.validation.Valid;
@@ -30,9 +31,9 @@ public class CategoryController {
     }
 
     @PostMapping("/public/categories")
-    public ResponseEntity<String> createCategory(@Valid @RequestBody Category category) {
-        categoryService.createCategory(category);
-        return new ResponseEntity<>("category created", HttpStatus.CREATED);
+    public ResponseEntity<CategoryDTO> createCategory(@Valid @RequestBody CategoryDTO categoryDto) {
+        CategoryDTO categoryDTO = categoryService.createCategory(categoryDto);
+        return new ResponseEntity<>(categoryDTO, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/admin/categories/{categoryId}")
