@@ -1,5 +1,6 @@
 package com.shopper.ecomm.controller;
 
+import com.shopper.ecomm.exceptions.ApiException;
 import com.shopper.ecomm.model.Category;
 import com.shopper.ecomm.service.CategoryService;
 import jakarta.validation.Valid;
@@ -24,34 +25,28 @@ public class CategoryController {
     @RequestMapping(value = "/public/categories", method = RequestMethod.GET)
     public ResponseEntity<List<Category>> getAllCategories() {
         List<Category> allCategories = categoryService.getAllCategories();
+        if (allCategories.isEmpty()) {
+            throw new ApiException("There are no categories available");
+        }
         return new ResponseEntity<>(allCategories, HttpStatus.OK);
     }
 
     @PostMapping("/public/categories")
     public ResponseEntity<String> createCategory(@Valid @RequestBody Category category) {
-
         categoryService.createCategory(category);
         return new ResponseEntity<>("category created", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/admin/categories/{categoryId}")
-    public ResponseEntity<String> deleteCategory(@PathVariable Long categoryId) {
-        try {
-            String status = categoryService.deleteCategory(categoryId);
-            return new ResponseEntity<>(status, HttpStatus.OK);
-        } catch (ResponseStatusException e) {
-            return new ResponseEntity<>(e.getReason(), e.getStatusCode());
-        }
+    public ResponseEntity<String> deleteCategory(@Valid @PathVariable Long categoryId) {
+        String status = categoryService.deleteCategory(categoryId);
+        return new ResponseEntity<>(status, HttpStatus.OK);
     }
 
     @PutMapping("/public/categories/{categoryId}")
     public ResponseEntity<String> updateCategory(@RequestBody Category category,
-                                                 @PathVariable Long categoryId){
-        try {
-            categoryService.updateCategory(category, categoryId);
-            return new ResponseEntity<>("updated category " + categoryId, HttpStatus.OK);
-        } catch (ResponseStatusException e){
-            return new ResponseEntity<>(e.getReason(), e.getStatusCode());
-        }
+                                                 @PathVariable Long categoryId) {
+        categoryService.updateCategory(category, categoryId);
+        return new ResponseEntity<>("updated category " + categoryId, HttpStatus.OK);
     }
 }
