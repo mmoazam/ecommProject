@@ -1,5 +1,6 @@
 package com.shopper.ecomm.service;
 
+import com.shopper.ecomm.exceptions.ApiException;
 import com.shopper.ecomm.exceptions.ResourceNotFoundException;
 import com.shopper.ecomm.model.Category;
 import com.shopper.ecomm.repositories.CategoryRepository;
@@ -28,6 +29,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void createCategory(Category category) {
+        Category savedCategory = categoryRepository.findByCategoryName(category.getCategoryName());
+        if(savedCategory != null){
+            throw new ApiException("Category already exists: " + category.getCategoryName());
+        }
         category.setCategoryId(nextId++);
         categoryRepository.save(category);
     }
