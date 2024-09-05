@@ -3,7 +3,10 @@ package com.shopper.ecomm.service;
 import com.shopper.ecomm.exceptions.ApiException;
 import com.shopper.ecomm.exceptions.ResourceNotFoundException;
 import com.shopper.ecomm.model.Category;
+import com.shopper.ecomm.payload.CategoryDTO;
+import com.shopper.ecomm.payload.CategoryResponse;
 import com.shopper.ecomm.repositories.CategoryRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -22,9 +25,24 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     CategoryRepository categoryRepository;
 
+    @Autowired
+    ModelMapper modelMapper;
+
     @Override
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+    public CategoryResponse getAllCategories() {
+        List<Category> categories = categoryRepository.findAll();
+        if (categories.isEmpty()) {
+            throw new ApiException("There are no categories available");
+        }
+
+        List<CategoryDTO> categoryDTOS = categories.stream()
+                .map(category -> modelMapper.map(category, CategoryDTO.class))
+                .toList();
+
+        CategoryResponse categoryResponse = new CategoryResponse();
+        categoryResponse.setContent(categoryDTOS);
+
+        return categoryResponse;
     }
 
     @Override

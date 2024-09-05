@@ -1,12 +1,13 @@
 package com.shopper.ecomm.service;
 
 import com.shopper.ecomm.model.Category;
+import com.shopper.ecomm.payload.CategoryResponse;
 
 import java.util.List;
 
 public interface CategoryService {
 
-    List<Category> getAllCategories();
+    CategoryResponse getAllCategories();
 
     void createCategory(Category category);
 

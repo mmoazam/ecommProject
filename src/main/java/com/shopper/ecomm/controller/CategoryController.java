@@ -2,6 +2,7 @@ package com.shopper.ecomm.controller;
 
 import com.shopper.ecomm.exceptions.ApiException;
 import com.shopper.ecomm.model.Category;
+import com.shopper.ecomm.payload.CategoryResponse;
 import com.shopper.ecomm.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -23,12 +24,9 @@ public class CategoryController {
 
     //@GetMapping("/api/public/categories")
     @RequestMapping(value = "/public/categories", method = RequestMethod.GET)
-    public ResponseEntity<List<Category>> getAllCategories() {
-        List<Category> allCategories = categoryService.getAllCategories();
-        if (allCategories.isEmpty()) {
-            throw new ApiException("There are no categories available");
-        }
-        return new ResponseEntity<>(allCategories, HttpStatus.OK);
+    public ResponseEntity<CategoryResponse> getAllCategories() {
+        CategoryResponse categoryResponse = categoryService.getAllCategories();
+        return new ResponseEntity<>(categoryResponse, HttpStatus.OK);
     }
 
     @PostMapping("/public/categories")
