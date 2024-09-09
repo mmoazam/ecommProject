@@ -2,6 +2,7 @@ package com.shopper.ecomm.controller;
 
 import com.shopper.ecomm.model.Product;
 import com.shopper.ecomm.payload.ProductDTO;
+import com.shopper.ecomm.payload.ProductResponse;
 import com.shopper.ecomm.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,5 +24,12 @@ public class ProductController {
         ProductDTO productDTO = productService.addProduct(categoryId, product);
         System.out.println(productDTO);
         return new ResponseEntity<>(productDTO, HttpStatus.CREATED);
+    }
+
+
+    @GetMapping("/public/products")
+    public ResponseEntity<ProductResponse> getProducts(){
+        ProductResponse productResponse = productService.getAllProducts();
+        return new ResponseEntity<>(productResponse, HttpStatus.OK);
     }
 }
