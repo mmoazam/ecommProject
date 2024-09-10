@@ -88,9 +88,16 @@ public class ProductServiceImpl implements ProductService {
         double specialPrice = product.getPrice() - ((product.getDiscount() * 0.01) * product.getPrice());
         product.setSpecialPrice(specialPrice);
         existingProduct.setSpecialPrice(specialPrice);
-        Product savedProduct =productRepository.save(existingProduct);
+        Product savedProduct = productRepository.save(existingProduct);
         return modelMapper.map(savedProduct, ProductDTO.class);
     }
 
+    @Override
+    public ProductDTO deleteProduct(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
+        productRepository.delete(product);
+        return modelMapper.map(product, ProductDTO.class);
+    }
 
 }
