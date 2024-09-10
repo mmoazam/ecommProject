@@ -5,7 +5,7 @@ import com.shopper.ecomm.payload.ProductDTO;
 import com.shopper.ecomm.payload.ProductResponse;
 
 public interface ProductService {
-    ProductDTO addProduct(Long categoryId, Product product);
+    ProductDTO addProduct(Long categoryId, ProductDTO productDTO);
 
     ProductResponse getAllProducts();
 
