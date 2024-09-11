@@ -33,6 +33,9 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private FileService fileService;
+
     @Override
     public ProductDTO addProduct(Long categoryId, ProductDTO productDTO) {
         Category category = categoryRepository.findById(categoryId)
@@ -118,7 +121,7 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
 
         String path = "productImages/";
-        String filename = uploadImage(path, image);
+        String filename = fileService.uploadImage(path, image);
         existingProduct.setImage(filename);
         Product savedProduct = productRepository.save(existingProduct);
 
@@ -126,30 +129,6 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
-    private String uploadImage(String path, MultipartFile file) throws IOException {
-        if(file.isEmpty()){
-            throw new RuntimeException("file not specified");
-        }
 
-        // check if file has extension
-        if(!file.getContentType().equals("image/png") && !file.getContentType().equals("image/jpg") && !file.getContentType().equals("image/jpeg")){
-            throw new RuntimeException("invalid file type");
-        }
-
-        String originalFilename = file.getOriginalFilename();
-        String randomName =  UUID.randomUUID().toString();
-
-        String newFilename = randomName.concat(originalFilename.substring(originalFilename.lastIndexOf('.')));
-
-        String filePath = path + File.separator + newFilename;
-
-        File folder = new File(path);
-        if(!folder.exists()){
-            folder.mkdir();
-        }
-
-        Files.copy(file.getInputStream(), Paths.get(filePath));
-        return newFilename;
-    }
 
 }
