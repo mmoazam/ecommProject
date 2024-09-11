@@ -1,9 +1,11 @@
 package com.shopper.ecomm.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+import lombok.*;
 
 @Entity
 @Data
@@ -14,12 +16,28 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long productId;
+
+    @NotBlank
     private String productName;
+
+    @NotBlank
+    @NonNull
+    @Valid
     private String image;
+
+    @NotBlank
     private String description;
+
+    @PositiveOrZero
     private Integer quantity;
+
+    @PositiveOrZero
     private double price;
+
+    @PositiveOrZero
     private double discount;
+
+    @Positive
     private double specialPrice;
 
     @ManyToOne
