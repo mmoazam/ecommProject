@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import static com.shopper.ecomm.config.AppConstants.IMAGE_FOLDER;
+
 @Service
 public class ProductServiceImpl implements ProductService {
 
@@ -120,15 +122,11 @@ public class ProductServiceImpl implements ProductService {
                 .findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
 
-        String path = "productImages/";
-        String filename = fileService.uploadImage(path, image);
+        String filename = fileService.uploadImage(IMAGE_FOLDER, image);
         existingProduct.setImage(filename);
         Product savedProduct = productRepository.save(existingProduct);
 
         return modelMapper.map(existingProduct, ProductDTO.class);
 
     }
-
-
-
 }
