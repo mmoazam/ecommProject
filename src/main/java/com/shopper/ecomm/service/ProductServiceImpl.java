@@ -1,5 +1,6 @@
 package com.shopper.ecomm.service;
 
+import com.shopper.ecomm.exceptions.ApiException;
 import com.shopper.ecomm.exceptions.ResourceNotFoundException;
 import com.shopper.ecomm.model.Category;
 import com.shopper.ecomm.model.Product;
@@ -42,6 +43,11 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO addProduct(Long categoryId, ProductDTO productDTO) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
+
+        if(!productRepository.findByProductName(productDTO.getProductName())
+                .isEmpty()){
+            throw new ApiException("Product already exists: " + productDTO.getProductName());
+        }
 
         Product product = modelMapper.map(productDTO, Product.class);
         product.setCategory(category);
