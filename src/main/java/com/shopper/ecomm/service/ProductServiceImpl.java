@@ -75,6 +75,11 @@ public class ProductServiceImpl implements ProductService {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
         List<Product> products = productRepository.findByCategoryOrderByPriceAsc(category);
+
+        if(products.isEmpty()){
+            throw new ApiException("Products not found for category: " + category.getCategoryName());
+        }
+
         List<ProductDTO> productDTOS = products.stream()
                 .map(product -> modelMapper.map(product, ProductDTO.class))
                 .toList();

@@ -4,6 +4,7 @@ import com.shopper.ecomm.model.Product;
 import com.shopper.ecomm.payload.ProductDTO;
 import com.shopper.ecomm.payload.ProductResponse;
 import com.shopper.ecomm.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class ProductController {
 
     @PostMapping("/admin/categories/{categoryId}/product")
     public ResponseEntity<ProductDTO> addProduct(
-            @RequestBody ProductDTO productDTO,
+            @Valid@RequestBody ProductDTO productDTO,
             @PathVariable Long categoryId
     ){
         ProductDTO returnedProductDTO = productService.addProduct(categoryId, productDTO);
@@ -49,7 +50,7 @@ public class ProductController {
 
     @PutMapping("/admin/products/{productId}")
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long productId,
-                                                    @RequestBody ProductDTO productDTO){
+                                                    @Valid @RequestBody ProductDTO productDTO){
         ProductDTO returnedProductDTO = productService.updateProduct(productId, productDTO);
         return new ResponseEntity<>(returnedProductDTO, HttpStatus.OK);
     }
@@ -62,7 +63,7 @@ public class ProductController {
 
     @PutMapping("/admin/products/{productId}/image")
     public ResponseEntity<ProductDTO> updateProductImage(@PathVariable Long productId,
-                                                         @RequestParam("image") MultipartFile image) throws IOException {
+                                                         @Valid @RequestParam("image") MultipartFile image) throws IOException {
         ProductDTO productDTO = productService.updateProductImage(productId, image);
         return new ResponseEntity<>(productDTO, HttpStatus.OK);
     }

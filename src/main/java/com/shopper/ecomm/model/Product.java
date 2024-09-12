@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Entity
@@ -18,6 +19,7 @@ public class Product {
     private Long productId;
 
     @NotBlank
+    @Size(min = 4, max = 50, message = "Product name must be between 4 and 50 characters")
     private String productName;
 
     @NotBlank
