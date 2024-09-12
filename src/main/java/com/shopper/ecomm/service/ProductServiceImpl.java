@@ -87,6 +87,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponse getProductsByKeyword(String keyword) {
         List<Product> products = productRepository.findByProductNameLikeIgnoreCase('%' + keyword + '%');
+
+        if(products.isEmpty()){
+            throw new ResourceNotFoundException("Product", "keyword", keyword);
+        }
+
         List<ProductDTO> productDTOS = products.stream()
                 .map(product -> modelMapper.map(product, ProductDTO.class))
                 .toList();
