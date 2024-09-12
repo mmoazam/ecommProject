@@ -1,5 +1,7 @@
 package com.shopper.ecomm.controller;
 
+import com.shopper.ecomm.config.AppConfig;
+import com.shopper.ecomm.config.AppConstants;
 import com.shopper.ecomm.model.Product;
 import com.shopper.ecomm.payload.ProductDTO;
 import com.shopper.ecomm.payload.ProductResponse;
@@ -30,8 +32,14 @@ public class ProductController {
     }
 
     @GetMapping("/public/products")
-    public ResponseEntity<ProductResponse> getProducts(){
-        ProductResponse productResponse = productService.getAllProducts();
+    public ResponseEntity<ProductResponse> getProducts(
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+            @RequestParam(value = "sortBy", defaultValue = AppConstants.SORT_PRODUCT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortOrder", defaultValue = AppConstants.SORT_ORDER, required = false) String sortOrder
+
+    ){
+        ProductResponse productResponse = productService.getAllProducts(pageNumber, pageSize, sortBy, sortOrder);
         return new ResponseEntity<>(productResponse, HttpStatus.OK);
     }
 
