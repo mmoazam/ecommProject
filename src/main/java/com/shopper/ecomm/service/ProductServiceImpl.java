@@ -128,6 +128,7 @@ public class ProductServiceImpl implements ProductService {
                 .findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
 
+        fileService.deleteImage(IMAGE_FOLDER, existingProduct.getImage());
         String filename = fileService.uploadImage(IMAGE_FOLDER, image);
         existingProduct.setImage(filename);
         Product savedProduct = productRepository.save(existingProduct);

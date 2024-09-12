@@ -42,10 +42,19 @@ public class FileServiceImpl implements FileService{
         }
 
         Files.copy(file.getInputStream(), Paths.get(filePath));
+
         return newFilename;
     }
 
     public boolean isValidImageFile(String filename) {
         return filename.toLowerCase().matches(".*\\.(png|jpg|jpeg)$");
+    }
+
+    @Override
+    public void deleteImage(String path, String image) throws IOException {
+        File file = new File(path + File.separator + image);
+        if(file.exists()){
+            file.delete();
+        }
     }
 }
