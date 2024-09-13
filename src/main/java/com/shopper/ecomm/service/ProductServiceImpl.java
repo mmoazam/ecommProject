@@ -86,7 +86,12 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse getProductsByCategoryId(Long categoryId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
-        List<Product> products = productRepository.findByCategoryOrderByPriceAsc(category);
+
+        Sort sortByAndOrder = Sort.by(Sort.Direction.fromString(sortOrder), sortBy);
+        Pageable pageDetails = PageRequest.of(pageNumber, pageSize, sortByAndOrder);
+
+        Page<Product> productPage = productRepository.findByCategoryOrderByPriceAsc(category, pageDetails);
+        List<Product> products = productPage.getContent();
 
         if(products.isEmpty()){
             throw new ApiException("Products not found for category: " + category.getCategoryName());
