@@ -107,7 +107,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse getProductsByKeyword(String keyword) {
+    public ProductResponse getProductsByKeyword(String s, Integer pageNumber, Integer pageSize, String sortBy, String keyword) {
         List<Product> products = productRepository.findByProductNameLikeIgnoreCase('%' + keyword + '%');
 
         if(products.isEmpty()){
