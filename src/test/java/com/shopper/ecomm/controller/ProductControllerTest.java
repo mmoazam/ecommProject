@@ -79,6 +79,26 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.content[0].productName").value("Test Product"));
     }
 
+    @Test
+    void TestGetProducts_NoProducts() throws Exception {
+        // Prepare mock data
+        ProductResponse mockProductResponse = new ProductResponse(); // Set up your mock response as needed
+        mockProductResponse.setContent(emptyProductDto);
+
+        // Configure the mock service
+        when(productService.getAllProducts(anyInt(), anyInt(), anyString(), anyString()))
+                .thenReturn(mockProductResponse);
+
+        // Perform the GET request
+        mockMvc.perform(get("/api/v1/public/products")
+                        .param("pageNumber", "1")
+                        .param("pageSize", "10")
+                        .param("sortBy", "productId")
+                        .param("sortOrder", "asc"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content").isEmpty());
+    }
+
 
     @Test
     void getProductsByCategoryId() {
