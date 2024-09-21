@@ -15,10 +15,10 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 @Table(name = "users",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = "username"),
-        @UniqueConstraint(columnNames = "email")
-})
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "username"),
+                @UniqueConstraint(columnNames = "email")
+        })
 public class EcommUser {
 
     @Id
@@ -48,10 +48,16 @@ public class EcommUser {
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},
             fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
-    joinColumns = @JoinColumn(name = "user_id"),
-    inverseJoinColumns = @JoinColumn(name = "role_id"))
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     @Setter
     @Getter
     @Column(name = "role_id")
     private Set<Role> roleSet = new HashSet<>();
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+            orphanRemoval = true)
+    @JoinTable(name = "ecomm_user")
+    @Column(name = "products")
+    private Set<Product> products;
 }
