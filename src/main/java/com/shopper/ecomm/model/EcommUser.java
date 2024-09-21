@@ -3,12 +3,11 @@ package com.shopper.ecomm.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -55,9 +54,20 @@ public class EcommUser {
     @Column(name = "role_id")
     private Set<Role> roleSet = new HashSet<>();
 
+    @ToString.Exclude
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},
             orphanRemoval = true)
     @JoinTable(name = "ecomm_user")
     @Column(name = "products")
     private Set<Product> products;
+
+
+    @Getter
+    @Setter
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "ecommUser_address",
+            joinColumns = @JoinColumn( name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "address_id")
+    )
+    private List<Address> addresses = new ArrayList<>();
 }
