@@ -8,6 +8,7 @@ import com.shopper.ecomm.payload.ProductDTO;
 import com.shopper.ecomm.payload.ProductResponse;
 import com.shopper.ecomm.repositories.CategoryRepository;
 import com.shopper.ecomm.repositories.ProductRepository;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import java.util.List;
 
 import static com.shopper.ecomm.config.AppConstants.IMAGE_FOLDER;
 
+@AllArgsConstructor
 @Service
 public class ProductServiceImpl implements ProductService {
 
